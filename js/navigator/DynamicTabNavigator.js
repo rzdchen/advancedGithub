@@ -16,6 +16,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Entypo from "react-native-vector-icons/Entypo";
 import NavigationUtil from "../navigator/NavigationUtil";
+import {connect} from 'react-redux';
 
 
 type Props = {};
@@ -70,7 +71,8 @@ const TABS = {//在这里配置页面的路由
         }
     },
 };
-export default class DynamicTabNavigator extends Component<Props> {
+
+class DynamicTabNavigator extends Component<Props> {
     constructor(props) {
         super(props);
         console.disableYellowBox = true;//禁掉黄色警告
@@ -81,7 +83,12 @@ export default class DynamicTabNavigator extends Component<Props> {
         const tabs = {PopularPage, TrendingPage, FavoritePage, MyPage};//根据需要定制显示的tab
         PopularPage.navigationOptions.tabBarLabel = '最热';//动态配置Tab属性
         return createAppContainer(createBottomTabNavigator(tabs, {
-            tabBarComponent: TabBarComponent,
+            tabBarComponent: props => {
+                return <TabBarComponent
+                    theme={this.props.theme}
+                    {...props}
+                />
+            },
         }));
     }
 
@@ -117,3 +124,9 @@ class TabBarComponent extends Component<Props> {
         />
     }
 }
+
+const mapStateToProps = state => ({
+    theme: state.theme.theme,
+});
+
+export default connect(mapStateToProps)(DynamicTabNavigator);
