@@ -13,21 +13,40 @@ import NavigationUtil from '../navigator/NavigationUtil'
 
 type Props = {};
 export default class PopularPage extends Component<Props> {
-    render() {
-        const TabNavigator = createAppContainer(createMaterialTopTabNavigator({
-            PopularTab1: {
-                screen: PopularTab,
-                navigationOptions: {
-                    title: "Tab1"
-                }
-            }, PopularTab2: {
-                screen: PopularTab,
-                navigationOptions: {
-                    title: "Tab2"
-                }
-            },
+    constructor(props) {
+        super(props);
+        this.tabNames = ['Java', 'Android', 'iOS', 'React', 'Vue', 'React Native', 'Flutter', 'Weex']
+    }
 
-        }));
+    _genTabs() {
+        const tabs = {};
+        this.tabNames.forEach((item, index) => {
+            tabs[`tab${index}`] = {
+                screen: props => <PopularTab {...props} tabLabel={item}/>,
+                navigationOptions: {
+                    title: item
+                }
+            }
+        })
+        return tabs;
+    }
+
+    render() {
+        const TabNavigator = createAppContainer(createMaterialTopTabNavigator(
+            this._genTabs(), {
+                tabBarOptions: {
+                    tabStyle: styles.tabStyle,
+                    upperCaseLabel: false,//是否使标签大写，默认为true
+                    scrollEnabled: true,//是否支持 选项卡滚动，默认false
+                    style: {
+                        backgroundColor: 'grey',//TabBar 的背景颜色
+                        height: 40//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
+                    },
+                    indicatorStyle: styles.indicatorStyle,//标签指示器的样式
+                    labelStyle: styles.labelStyle,//文字的样式
+                }
+            }
+        ));
         return (
             <View style={{flex: 1}}>
                 <TabNavigator/>
@@ -42,8 +61,8 @@ class PopularTab extends Component<Props> {
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>{tabLabel}</Text>
-                <Text onPress={()=>{
-                    NavigationUtil.goPage({},'DetailPage')
+                <Text onPress={() => {
+                    NavigationUtil.goPage({}, 'DetailPage')
                 }}>跳转到详情页</Text>
             </View>
         );
@@ -62,9 +81,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: 10,
     },
-    instructions: {
-        textAlign: 'center',
-        color: '#333333',
-        marginBottom: 5,
+    tabStyle: {
+        minWidth: 40
     },
+    indicatorStyle: {
+        height: 2,
+        backgroundColor: 'white',
+    },
+    labelStyle: {
+        fontSize: 13,
+        margin: 0,
+    },
+    indicator: {
+        color: 'red',
+        margin: 10
+    }
 });
