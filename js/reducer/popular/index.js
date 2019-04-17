@@ -49,6 +49,33 @@ export default function onAction(state = defaultState, action) {
                     isLoading: false,
                 }
             };
+        case Types.POPULAR_LOAD_MORE_SUCCESS://上拉加载更多成功
+            return {
+                ...state,//Object.assign @http://www.devio.org/2018/09/09/ES6-ES7-ES8-Feature/
+                [action.storeName]: {
+                    ...state[action.storeName],
+                    projectModels: action.projectModels,
+                    hideLoadingMore: false,
+                    pageIndex: action.pageIndex,
+                }
+            };
+        case Types.POPULAR_LOAD_MORE_FAIL://上拉加载更多失败
+            return {
+                ...state,//Object.assign @http://www.devio.org/2018/09/09/ES6-ES7-ES8-Feature/
+                [action.storeName]: {
+                    ...state[action.storeName],
+                    hideLoadingMore: true,
+                    pageIndex: action.pageIndex,
+                }
+            };
+        case Types.FLUSH_POPULAR_FAVORITE://刷新收藏状态
+            return {
+                ...state,
+                [action.storeName]: {
+                    ...state[action.storeName],
+                    projectModels: action.projectModels,
+                }
+            };
         default:
             return state;
     }
