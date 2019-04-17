@@ -79,23 +79,21 @@ class DynamicTabNavigator extends Component<Props> {
     }
 
     _tabNavigator() {
+        if(this.Tabs){
+            return this.Tabs;
+        }
         const {PopularPage, TrendingPage, FavoritePage, MyPage} = TABS;
         const tabs = {PopularPage, TrendingPage, FavoritePage, MyPage};//根据需要定制显示的tab
         PopularPage.navigationOptions.tabBarLabel = '最热';//动态配置Tab属性
-        return createAppContainer(createBottomTabNavigator(tabs, {
+        return this.Tabs = createAppContainer(createBottomTabNavigator(tabs, {
             tabBarComponent: props => {
-                return <TabBarComponent
-                    theme={this.props.theme}
-                    {...props}
-                />
-            },
+                return <TabBarComponent theme={this.props.theme} {...props}/>
+            }
         }));
     }
 
     render() {
         const Tab = this._tabNavigator();
-        //把navigation保存到NavigationUtil中，保证其他NavigationContainer下的页面能跳转到此NavigationContainer下的页面。
-        NavigationUtil.navigation = this.props.navigation;
         return <Tab/>
     }
 }
@@ -110,17 +108,9 @@ class TabBarComponent extends Component<Props> {
     }
 
     render() {
-        const {routes, index} = this.props.navigation.state;
-        if (routes[index].params) {
-            const {theme} = routes[index].params;
-            //以最新的修改为主
-            if (theme && theme.updateTime > this.theme.updateTime) {
-                this.theme = theme;
-            }
-        }
         return <BottomTabBar
             {...this.props}
-            activeTintColor={this.theme.tintColor || this.theme.activeTintColor}
+            activeTintColor={this.props.theme}
         />
     }
 }

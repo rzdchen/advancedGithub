@@ -9,7 +9,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text, View, Button} from 'react-native';
 import {connect} from 'react-redux'
-import {onThemeChange} from '../action/theme'
+import actions from '../action/index'
 
 
 type Props = {};
@@ -17,7 +17,7 @@ class FavoritePage extends Component<Props> {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>Home</Text>
+                <Text style={styles.welcome}>Favorite</Text>
                 <Button
                     title="改变主题色"
                     onPress={() => {
@@ -53,6 +53,6 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
-    onThemeChange: theme => dispatch(onThemeChange(theme)),
+    onThemeChange: theme => dispatch(actions.onThemeChange(theme)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(FavoritePage);

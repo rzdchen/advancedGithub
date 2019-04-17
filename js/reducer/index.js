@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
 import {combineReducers} from 'redux'
 import theme from './theme'
 import {rootCom, RootNavigator} from '../navigator/AppNavigator';
