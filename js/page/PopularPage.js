@@ -10,6 +10,7 @@ import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Button, FlatList, RefreshControl} from 'react-native';
 import {connect} from 'react-redux';
 import actions from '../action/index';
+import PopularItem from '../common/PopularItem';
 
 import {createAppContainer, createMaterialTopTabNavigator} from "react-navigation";
 import NavigationUtil from '../navigator/NavigationUtil'
@@ -85,11 +86,11 @@ class PopularTab extends Component<Props> {
 
     renderItem(data) {
         const item = data.item;
-        return <View style={{marginBottom: 10}}>
-            <Text style={{backgroundColor: '#faa'}}>
-                {JSON.stringify(item)}
-            </Text>
-        </View>
+        return <PopularItem
+            item={item}
+            onSelect={() => {
+
+            }}/>
     }
 
     render() {
