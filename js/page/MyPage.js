@@ -7,7 +7,8 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Button, Platform, StyleSheet, Text, View} from 'react-native';
+import NavigationUtil from "../navigator/NavigationUtil";
 
 
 type Props = {};
@@ -16,6 +17,24 @@ export default class HomePage extends Component<Props> {
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>Home</Text>
+                <Text onPress={() => {
+                    NavigationUtil.goPage({}, 'DetailPage')
+                }}>跳转到详情页</Text>
+                <Button
+                    title={'调试 fetch'}
+                    onPress={() => {
+                        NavigationUtil.goPage({}, 'FetchDemoPage')
+                    }}/>
+                <Button
+                    title={'调试 AsyncStorage'}
+                    onPress={() => {
+                        NavigationUtil.goPage({}, 'AsyncStorageDemoPage')
+                    }}/>
+                <Button
+                    title={'调试 DataStore'}
+                    onPress={() => {
+                        NavigationUtil.goPage({}, 'DataStoreDemoPage')
+                    }}/>
             </View>
         );
     }
