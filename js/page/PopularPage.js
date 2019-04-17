@@ -7,7 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, Button} from 'react-native';
 import {createAppContainer, createMaterialTopTabNavigator} from "react-navigation";
 import NavigationUtil from '../navigator/NavigationUtil'
 
@@ -64,6 +64,11 @@ class PopularTab extends Component<Props> {
                 <Text onPress={() => {
                     NavigationUtil.goPage({}, 'DetailPage')
                 }}>跳转到详情页</Text>
+               <Button
+                   title={'调试 fetch'}
+                   onPress={() => {
+                    NavigationUtil.goPage({}, 'FetchDemoPage')
+                }}/>
             </View>
         );
     }
