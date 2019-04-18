@@ -14,13 +14,13 @@ import PopularItem from '../common/PopularItem';
 import Toast from 'react-native-easy-toast'
 
 import {createAppContainer, createMaterialTopTabNavigator} from "react-navigation";
-import NavigationUtil from '../navigator/NavigationUtil'
+import NavigationBar from '../common/NavigationBar'
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
 
 type Props = {};
-const THEME_COLOR = 'red';
+const THEME_COLOR = '#678';
 export default class PopularPage extends Component<Props> {
     constructor(props) {
         super(props);
@@ -41,6 +41,15 @@ export default class PopularPage extends Component<Props> {
     }
 
     render() {
+        let statusBar = {
+            backgroundColor: THEME_COLOR,
+            barStyle: 'light-content',
+        };
+        let navigationBar = <NavigationBar
+            title={'最热'}
+            statusBar={statusBar}
+            style={{backgroundColor: THEME_COLOR}}
+        />;
         const TabNavigator = createAppContainer(createMaterialTopTabNavigator(
             this._genTabs(), {
                 tabBarOptions: {
@@ -58,6 +67,7 @@ export default class PopularPage extends Component<Props> {
         ));
         return (
             <View style={{flex: 1}}>
+                {navigationBar}
                 <TabNavigator/>
             </View>
         );
@@ -119,8 +129,9 @@ class PopularTab extends Component<Props> {
 
             }}/>
     }
-    genIndicator(){
-        return this._store().hideLoadingMore?null:
+
+    genIndicator() {
+        return this._store().hideLoadingMore ? null :
             <View style={styles.indicatorContainer}>
                 <ActivityIndicator
                     style={styles.indicator}
@@ -149,8 +160,8 @@ class PopularTab extends Component<Props> {
                             tintColor={THEME_COLOR}
                         />
                     }
-                    ListFooterComponent={()=>this.genIndicator()}
-                    onEndReached={()=>{
+                    ListFooterComponent={() => this.genIndicator()}
+                    onEndReached={() => {
                         console.log("-onEndReached---");
                         setTimeout(() => {
                             if (this.canLoadMore) {//fix 滚动时两次调用onEndReached https://github.com/facebook/react-native/issues/14015
@@ -179,7 +190,7 @@ const mapStateToProps = state => ({
 });
 const mapDispatchToProps = dispatch => ({
     onRefreshPopular: (storeName, url, pageSize) => dispatch(actions.onRefreshPopular(storeName, url, pageSize)),
-    onLoadMorePopular: (storeName, pageIndex, pageSize,items, callBack) => dispatch(actions.onLoadMorePopular(storeName, pageIndex, pageSize,items, callBack)),
+    onLoadMorePopular: (storeName, pageIndex, pageSize, items, callBack) => dispatch(actions.onLoadMorePopular(storeName, pageIndex, pageSize, items, callBack)),
 });
 const PopularTabPage = connect(mapStateToProps, mapDispatchToProps)(PopularTab);
 
