@@ -36,7 +36,7 @@ export default class PopularPage extends Component<Props> {
                     title: item
                 }
             }
-        })
+        });
         return tabs;
     }
 
@@ -141,8 +141,6 @@ class PopularTab extends Component<Props> {
     }
 
     render() {
-        const {tabLabel} = this.props;
-        const {popular} = this.props;
         let store = this._store();
         return (
             <View style={styles.container}>
@@ -207,7 +205,8 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     tabStyle: {
-        minWidth: 40
+        // minWidth: 40//fix minWidth会导致tabStyle初次加载时闪烁
+        padding: 0,
     },
     indicatorStyle: {
         height: 2,

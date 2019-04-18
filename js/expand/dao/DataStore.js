@@ -1,5 +1,5 @@
 import {AsyncStorage} from 'react-native';
-// import Trending from 'GitHubTrending';
+import Trending from 'GitHubTrending';
 
 export const FLAG_STORAGE = {flag_popular: 'popular', flag_trending: 'trending'};
 
@@ -30,7 +30,7 @@ export default class DataStore {
                 }).catch((error => {
                     reject(error);
                 }))
-            })
+            });
         })
     }
 
@@ -58,7 +58,7 @@ export default class DataStore {
                         resolve(JSON.parse(result));
                     } catch (e) {
                         reject(e);
-                        console.error(e);
+                        console. (e);
                     }
                 } else {
                     reject(error);
@@ -92,17 +92,17 @@ export default class DataStore {
                         reject(error);
                     })
             } else {
-                // new Trending().fetchTrending(url)
-                //     .then(items => {
-                //         if (!items) {
-                //             throw new Error('responseData is null');
-                //         }
-                //         this.saveData(url, items);
-                //         resolve(items);
-                //     })
-                //     .catch(error => {
-                //         reject(error);
-                //     })
+                new Trending().fetchTrending(url)
+                    .then(items => {
+                        if (!items) {
+                            throw new Error('responseData is null');
+                        }
+                        this.saveData(url, items);
+                        resolve(items);
+                    })
+                    .catch(error => {
+                        reject(error);
+                    })
             }
         })
     }
