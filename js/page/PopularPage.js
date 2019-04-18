@@ -15,6 +15,8 @@ import Toast from 'react-native-easy-toast'
 
 import {createAppContainer, createMaterialTopTabNavigator} from "react-navigation";
 import NavigationBar from '../common/NavigationBar'
+import NavigationUtil from "../navigator/NavigationUtil";
+import {FLAG_STORAGE} from "../expand/dao/DataStore";
 
 const URL = 'https://api.github.com/search/repositories?q=';
 const QUERY_STR = '&sort=stars';
@@ -126,7 +128,12 @@ class PopularTab extends Component<Props> {
         return <PopularItem
             item={item}
             onSelect={() => {
-
+                NavigationUtil.goPage({
+                    theme,
+                    projectModel: item,
+                    flag: FLAG_STORAGE.flag_popular,
+                    callback,
+                }, 'DetailPage')
             }}/>
     }
 

@@ -58,7 +58,7 @@ export default class DataStore {
                         resolve(JSON.parse(result));
                     } catch (e) {
                         reject(e);
-                        console. (e);
+                        console.error(e);
                     }
                 } else {
                     reject(error);

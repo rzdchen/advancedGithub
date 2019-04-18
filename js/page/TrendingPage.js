@@ -7,16 +7,29 @@
  */
 
 import React, {Component} from 'react';
-import {ActivityIndicator, StyleSheet, Text, View, Button, FlatList, RefreshControl} from 'react-native';
+import {
+    ActivityIndicator,
+    StyleSheet,
+    Text,
+    View,
+    Button,
+    DeviceEventEmitter,
+    FlatList,
+    RefreshControl,
+    TouchableOpacity
+} from 'react-native';
 import {connect} from 'react-redux';
 import actions from '../action/index';
 import TrendingItem from '../common/TrendingItem';
 import Toast from 'react-native-easy-toast'
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 import {createAppContainer, createMaterialTopTabNavigator} from "react-navigation";
 import NavigationBar from '../common/NavigationBar'
+import TrendingDialog, {TimeSpans} from '../common/TrendingDialog'
 
 const URL = 'https://github.com/trending/';
+const EVENT_TYPE_TIME_SPAN_CHANGE='EVENT_TYPE_TIME_SPAN_CHANGE';
 
 type Props = {};
 const THEME_COLOR = '#678';
@@ -24,6 +37,9 @@ export default class TrendingPage extends Component<Props> {
     constructor(props) {
         super(props);
         this.tabNames = ['All', 'PHP', 'Java', 'JavaScript', 'C', 'C#']
+        this.state = {
+            timeSpan: TimeSpans[0],
+        };
     }
 
     _genTabs() {
@@ -39,17 +55,47 @@ export default class TrendingPage extends Component<Props> {
         return tabs;
     }
 
-    render() {
-        let statusBar = {
-            backgroundColor: THEME_COLOR,
-            barStyle: 'light-content',
-        };
-        let navigationBar = <NavigationBar
-            title={'趋势'}
-            statusBar={statusBar}
-            style={{backgroundColor: THEME_COLOR}}
-        />;
-        const TabNavigator = createAppContainer(createMaterialTopTabNavigator(
+    renderTitleView() {
+        return <View>
+            <TouchableOpacity
+                underlayColor='transparent'
+                onPress={() => this.dialog.show()}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Text style={{
+                        fontSize: 18,
+                        color: '#FFFFFF',
+                        fontWeight: '400'
+                    }}>趋势 {this.state.timeSpan.showText}</Text>
+                    <MaterialIcons
+                        name={'arrow-drop-down'}
+                        size={22}
+                        style={{color: 'white'}}
+                    />
+                </View>
+            </TouchableOpacity>
+        </View>
+    }
+
+    onSelectTimeSpan(tab) {
+        this.dialog.dismiss();
+        this.setState({
+            timeSpan: tab
+        });
+        DeviceEventEmitter.emit(EVENT_TYPE_TIME_SPAN_CHANGE, tab);
+    }
+
+    renderTrendingDialog() {
+        return <TrendingDialog
+            ref={dialog => this.dialog = dialog}
+            onSelect={tab => this.onSelectTimeSpan(tab)}
+        />
+    }
+
+    _tabNav() {
+        if (this.tabNav) {
+            return this.tabNav;
+        }
+        return this.tabNav = createAppContainer(createMaterialTopTabNavigator(
             this._genTabs(), {
                 tabBarOptions: {
                     tabStyle: styles.tabStyle,
@@ -64,10 +110,24 @@ export default class TrendingPage extends Component<Props> {
                 }
             }
         ));
+    }
+
+    render() {
+        let statusBar = {
+            backgroundColor: THEME_COLOR,
+            barStyle: 'light-content',
+        };
+        let navigationBar = <NavigationBar
+            titleView={this.renderTitleView()}
+            statusBar={statusBar}
+            style={{backgroundColor: THEME_COLOR}}
+        />;
+        const TabNavigator = this._tabNav();
         return (
             <View style={{flex: 1}}>
                 {navigationBar}
                 <TabNavigator/>
+                {this.renderTrendingDialog()}
             </View>
         );
     }
@@ -82,6 +142,16 @@ class TrendingTab extends Component<Props> {
 
     componentDidMount() {
         this.loadData();
+        this.timeSpanChangeListener = DeviceEventEmitter.addListener(EVENT_TYPE_TIME_SPAN_CHANGE, (timeSpan) => {
+            this.timeSpan = timeSpan;
+            this.loadData();
+        });
+    }
+
+    componentWillUnmount() {
+        if (this.timeSpanChangeListener) {
+            this.timeSpanChangeListener.remove();
+        }
     }
 
     loadData(loadMore) {
