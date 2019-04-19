@@ -62,7 +62,8 @@ export default class BaseItem extends Component {
             <FontAwesome
                 name={this.state.isFavorite ? 'star' : 'star-o'}
                 size={26}
-                style={{color: theme.themeColor}}
+                // style={{color: theme.themeColor}}
+                style={{color: 'red'}}
             />
         </TouchableOpacity>
     }

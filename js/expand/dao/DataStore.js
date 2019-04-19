@@ -55,6 +55,7 @@ export default class DataStore {
             AsyncStorage.getItem(url, (error, result) => {
                 if (!error) {
                     try {
+                        console.log(url+"---"+JSON.stringify(result));
                         resolve(JSON.parse(result));
                     } catch (e) {
                         reject(e);
