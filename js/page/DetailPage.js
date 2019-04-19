@@ -3,8 +3,8 @@ import {StyleSheet, TouchableOpacity, View, DeviceInfo} from 'react-native';
 import {WebView}from 'react-native-webview';
 import NavigationBar from '../common/NavigationBar'
 import ViewUtil from "../util/ViewUtil";
-import share from "../res/data/share";
-import ShareUtil from "../util/ShareUtil";
+// import share from "../res/data/share";
+// import ShareUtil from "../util/ShareUtil";
 import SafeAreaViewPlus from "../common/SafeAreaViewPlus";
 const TRENDING_URL = 'https://github.com/';
 type Props = {};
@@ -12,21 +12,22 @@ const THEME_COLOR = '#678';
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import NavigationUtil from "../navigator/NavigationUtil";
 import BackPressComponent from "../common/BackPressComponent";
-import FavoriteDao from "../expand/dao/FavoriteDao";
+// import FavoriteDao from "../expand/dao/FavoriteDao";
 
 export default class DetailPage extends Component<Props> {
     constructor(props) {
         super(props);
         this.params = this.props.navigation.state.params;
-        const {projectModel,flag} = this.params;
-        this.favoriteDao = new FavoriteDao(flag);
+        // const {projectModel,flag} = this.params;
+        const {projectModel} = this.params;
+        // this.favoriteDao = new FavoriteDao(flag);
         this.url = projectModel.item.html_url || TRENDING_URL + projectModel.item.fullName;
-        const title = projectModel.item.full_name || projectModel.item.fullName;
+        const title = projectModel.item.full_name || projectModel.fullName;
         this.state = {
             title: title,
             url: this.url,
             canGoBack: false,
-            isFavorite:projectModel.isFavorite
+            isFavorite: projectModel.isFavorite
         };
         this.backPress = new BackPressComponent({backPress: () => this.onBackPress()});
     }
@@ -51,24 +52,25 @@ export default class DetailPage extends Component<Props> {
             NavigationUtil.goBack(this.props.navigation);
         }
     }
-    onFavoriteButtonClick(){
-        const {projectModel,callback}=this.params;
-        const isFavorite=projectModel.isFavorite=!projectModel.isFavorite;
-        callback(isFavorite);//更新Item的收藏状态
-        this.setState({
-            isFavorite:isFavorite,
-        });
-        let key = projectModel.item.fullName ? projectModel.item.fullName : projectModel.item.id.toString();
-        if (projectModel.isFavorite) {
-            this.favoriteDao.saveFavoriteItem(key, JSON.stringify(projectModel.item));
-        } else {
-            this.favoriteDao.removeFavoriteItem(key);
-        }
-    }
+    // onFavoriteButtonClick(){
+    //     const {projectModel,callback}=this.params;
+    //     const isFavorite=projectModel.isFavorite=!projectModel.isFavorite;
+    //     callback(isFavorite);//更新Item的收藏状态
+    //     this.setState({
+    //         isFavorite:isFavorite,
+    //     });
+    //     let key = projectModel.item.fullName ? projectModel.item.fullName : projectModel.item.id.toString();
+    //     if (projectModel.isFavorite) {
+    //         this.favoriteDao.saveFavoriteItem(key, JSON.stringify(projectModel.item));
+    //     } else {
+    //         this.favoriteDao.removeFavoriteItem(key);
+    //     }
+    // }
     renderRightButton() {
         return (<View style={{flexDirection: 'row'}}>
                 <TouchableOpacity
-                    onPress={() => this.onFavoriteButtonClick()}>
+                    // onPress={() => this.onFavoriteButtonClick()}
+                >
                     <FontAwesome
                         name={this.state.isFavorite ? 'star' : 'star-o'}
                         size={20}
@@ -76,10 +78,10 @@ export default class DetailPage extends Component<Props> {
                     />
                 </TouchableOpacity>
                 {ViewUtil.getShareButton(() => {
-                    let shareApp = share.share_app;
-                    ShareUtil.shareboard(shareApp.content, shareApp.imgUrl, this.url, shareApp.title, [0, 1, 2, 3, 4, 5, 6], (code, message) => {
-                        console.log("result:" + code + message);
-                    });
+                    // let shareApp = share.share_app;
+                    // ShareUtil.shareboard(shareApp.content, shareApp.imgUrl, this.url, shareApp.title, [0, 1, 2, 3, 4, 5, 6], (code, message) => {
+                    //     console.log("result:" + code + message);
+                    // });
                 })}
             </View>
         )
@@ -93,19 +95,19 @@ export default class DetailPage extends Component<Props> {
     }
 
     render() {
-        const {theme} = this.params;
         const titleLayoutStyle = this.state.title.length > 20 ? {paddingRight: 30} : null;
         let navigationBar = <NavigationBar
             leftButton={ViewUtil.getLeftBackButton(() => this.onBack())}
             titleLayoutStyle={titleLayoutStyle}
             title={this.state.title}
-            style={theme.styles.navBar}
+            // style={theme.styles.navBar}
+            style={{backgroundColor:THEME_COLOR}}
             rightButton={this.renderRightButton()}
         />;
 
         return (
             <SafeAreaViewPlus
-                topColor={theme.themeColor}
+                // topColor={theme.themeColor}
             >
                 {navigationBar}
                 <WebView

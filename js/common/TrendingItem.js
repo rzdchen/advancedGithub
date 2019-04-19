@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View,} from 'react-native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import HTMLView from "react-native-htmlview/HTMLView";
+import BaseItem from "./BaseItem";
 
-export default class PopularItem extends Component {
+export default class PopularItem extends BaseItem {
     render() {
-        // const {projectModel} = this.props;
+        const {projectModel} = this.props;
         // const {item} = projectModel;
-        const {item} = this.props;
+        const item = projectModel;
+        // const {item} = this.props;
         if (!item || !item.owner) return null;
         let favoriteIcon =
             <TouchableOpacity

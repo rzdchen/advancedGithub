@@ -66,7 +66,7 @@ export default class HomePage extends Component<Props> {
                 {navigationBar}
                 <Text style={styles.welcome}>Home</Text>
                 <Text onPress={() => {
-                    NavigationUtil.goPage({}, 'DetailPage')
+                    // NavigationUtil.goPage({}, 'DetailPage')
                 }}>跳转到详情页</Text>
                 <Button
                     title={'调试 fetch'}

@@ -60,7 +60,8 @@ export default class PopularPage extends Component<Props> {
                     scrollEnabled: true,//是否支持 选项卡滚动，默认false
                     style: {
                         backgroundColor: 'grey',//TabBar 的背景颜色
-                        height: 40//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
+                        height: 30,//fix 开启scrollEnabled后再Android上初次加载时闪烁问题
+                        alignItems: 'center',
                     },
                     indicatorStyle: styles.indicatorStyle,//标签指示器的样式
                     labelStyle: styles.labelStyle,//文字的样式
@@ -126,13 +127,11 @@ class PopularTab extends Component<Props> {
     renderItem(data) {
         const item = data.item;
         return <PopularItem
-            item={item}
+            projectModel={item}
             onSelect={() => {
                 NavigationUtil.goPage({
-                    theme,
                     projectModel: item,
                     flag: FLAG_STORAGE.flag_popular,
-                    callback,
                 }, 'DetailPage')
             }}/>
     }

@@ -7,7 +7,6 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
 import NavigationUtil from "../navigator/NavigationUtil";
 import DynamicTabNavigator from "../navigator/DynamicTabNavigator";
 import {NavigationActions} from 'react-navigation';
@@ -18,7 +17,7 @@ import BackPressComponent from '../common/BackPressComponent';
 type Props = {};
 class HomePage extends Component<Props> {
 
-    constructor(){
+    constructor(props){
         super(props);
         this.backPress = new BackPressComponent({backPress: this.onBackPress});
     }
