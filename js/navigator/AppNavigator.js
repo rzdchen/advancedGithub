@@ -3,9 +3,7 @@ import {createStackNavigator, createSwitchNavigator, createAppContainer} from "r
 import WelcomePage from '../page/WelcomePage';
 import HomePage from '../page/HomePage';
 import DetailPage from '../page/DetailPage';
-import FetchDemoPage from '../page/FetchDemoPage';
-import AsyncStorageDemoPage from '../page/AsyncStorageDemoPage';
-import DataStoreDemoPage from '../page/DataStoreDemoPage';
+import WebViewPage from '../page/WebViewPage';
 import {createReactNavigationReduxMiddleware, reduxifyNavigator} from "react-navigation-redux-helpers";
 import connect from "react-redux/es/connect/connect";
 
@@ -32,19 +30,10 @@ const MainNavigator = createStackNavigator({
             header: null,
         }
     },
-    FetchDemoPage: {
-        screen: FetchDemoPage,
+    WebViewPage: {
+        screen: WebViewPage,
         navigationOptions: {
-        }
-    },
-    AsyncStorageDemoPage: {
-        screen: AsyncStorageDemoPage,
-        navigationOptions: {
-        }
-    },
-    DataStoreDemoPage: {
-        screen: DataStoreDemoPage,
-        navigationOptions: {
+            header: null,
         }
     },
 });
