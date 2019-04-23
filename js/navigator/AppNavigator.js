@@ -4,6 +4,8 @@ import WelcomePage from '../page/WelcomePage';
 import HomePage from '../page/HomePage';
 import DetailPage from '../page/DetailPage';
 import WebViewPage from '../page/WebViewPage';
+import AboutPage from '../page/about/AboutPage';
+import AboutMePage from '../page/about/AboutMePage';
 import {createReactNavigationReduxMiddleware, reduxifyNavigator} from "react-navigation-redux-helpers";
 import connect from "react-redux/es/connect/connect";
 
@@ -36,6 +38,18 @@ const MainNavigator = createStackNavigator({
             header: null,
         }
     },
+    AboutPage: {
+        screen: AboutPage,
+        navigationOptions: {
+            header: null,
+        }
+    },
+    AboutMePage: {
+        screen: AboutMePage,
+        navigationOptions: {
+            header: null,
+        }
+    },
 });
 export const RootNavigator = createAppContainer(createSwitchNavigator({
     Init: InitNavigator,
@@ -55,7 +69,6 @@ export const RootNavigator = createAppContainer(createSwitchNavigator({
 export const middleware = createReactNavigationReduxMiddleware(
     'root',
     state => state.nav,
-
 );
 
 /**
